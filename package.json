@@ -1,0 +1,36 @@
+{
+  "name": "2015",
+  "version": "0.0.0",
+  "description": "best of 2015 in music",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -fr dist",
+    "start": "node dev_server"
+  },
+  "author": "kibin",
+  "license": "ISC",
+  "dependencies": {
+    "@cycle/isolate": "^1.1.1",
+    "@motorcycle/core": "^1.0.0",
+    "@motorcycle/dom": "^1.0.3",
+    "most": "^0.16.0",
+    "ramda": "^0.19.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "*",
+    "babel-loader": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-stage-2": "*",
+    "css-loader": "*",
+    "express": "*",
+    "file-loader": "^0.8.5",
+    "postcss-loader": "*",
+    "style-loader": "*",
+    "stylus-loader": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-middleware": "*",
+    "webpack-hot-middleware": "*",
+    "webpack-notifier": "*"
+  }
+}
