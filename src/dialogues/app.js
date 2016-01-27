@@ -2,21 +2,22 @@ import './app.styl'
 
 import { article, div, h1, header, hr } from '@motorcycle/dom'
 import isolate from '@cycle/isolate'
-import { map, compose, sort, prop } from 'ramda'
+import { map, compose, sortBy, reverse, prop, head } from 'ramda'
 import { of } from 'most'
 
 import { Player, Release } from 'dialogues'
 import { releases } from 'data'
 
+const createRelease = sources => release =>
+  isolate(Release)({ ...sources, props$: of({ release }) })
+
 export function App(sources) {
   const player = Player(sources)
-  const list = compose(
-    map(release => isolate(Release)({
-      sources,
-      props$: of(release),
-    })),
-    sort((a, b) => b.position - a.position),
-  )(releases)
+  const makeChart = compose(
+    map(compose(prop(`DOM`), createRelease(sources))),
+    reverse,
+    sortBy(prop(`position`)),
+  )
 
   return {
     DOM: sources.Language.map(language =>
@@ -36,7 +37,7 @@ export function App(sources) {
                   has all the music that made us laughing, painting,
                   cooking, programming, dancing like apes, crying on the floor
                   and simply browsing the internets like normal kids.`),
-          ...map(prop(`DOM`), list),
+          ...makeChart(releases),
         ]),
         //player.DOM,
       ]),
