@@ -2,14 +2,11 @@ export const releases = [{
   artist: `FKA Twigs`,
   release: `M3L155X`,
   cover: require(`styles/img/covers/twigs.jpg`),
+  key: `twigs`,
   position: 1,
   song: {
     name: `M3L155X`,
     link: `bYU3j-22360`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `spotify`,
@@ -22,14 +19,11 @@ export const releases = [{
   artist: `Grimes`,
   release: `Art Angels`,
   cover: require(`styles/img/covers/grimes.jpg`),
+  key: `grimes`,
   position: 2,
   song: {
     name: `Kill v. Maim`,
     link: `c2EJMd7ZN7w`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `yandex`,
@@ -45,14 +39,11 @@ export const releases = [{
   artist: `Zebra Katz x Leila`,
   release: `Nu Renegade`,
   cover: require(`styles/img/covers/zebra.jpg`),
+  key: `zebra`,
   position: 3,
   song: {
     name: `You Tell ’Em`,
     link: `1CV_sZuNRyc`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `soundcloud`,
@@ -68,14 +59,11 @@ export const releases = [{
   artist: `SOPHIE`,
   release: `Product`,
   cover: require(`styles/img/covers/sophie.jpg`),
+  key: `sophie`,
   position: 4,
   song: {
     name: `Just Like We Never Said Goodbye`,
     link: `6Z3N79ktprw`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `youtube`,
@@ -91,14 +79,11 @@ export const releases = [{
   artist: `Arca`,
   release: `Mutant`,
   cover: require(`styles/img/covers/arca.jpg`),
+  key: `arca`,
   position: 5,
   song: {
     name: `Soichiro`,
     link: `mYEyHb8x6AY`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `youtube`,
@@ -114,14 +99,11 @@ export const releases = [{
   artist: `Mykki Blanco`,
   release: `Mykki Blanco presents C-ORE`,
   cover: require(`styles/img/covers/mykki.jpg`),
+  key: `mykki`,
   position: 6,
   song: {
     name: `Coke White, Starlight`,
     link: `ioMKTWCIwl8`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `bandcamp`,
@@ -137,14 +119,11 @@ export const releases = [{
   artist: `Power Pill Fist`,
   release: `Werebeard`,
   cover: require(`styles/img/covers/ppfist.jpg`),
+  key: `ppfist`,
   position: 7,
   song: {
     name: `Swear Jar`,
     link: `AUzpGQ3-kIs`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `bandcamp`,
@@ -157,14 +136,11 @@ export const releases = [{
   artist: `Chelsea Wolfe`,
   release: `Abyss`,
   cover: require(`styles/img/covers/wolfe.jpg`),
+  key: `wolfe`,
   position: 8,
   song: {
     name: `Carrion Flowers`,
     link: `46u_Ggsub1A`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `bandcamp`,
@@ -180,14 +156,11 @@ export const releases = [{
   artist: `Lorn`,
   release: `Vessel`,
   cover: require(`styles/img/covers/lorn.jpg`),
+  key: `lorn`,
   position: 9,
   song: {
     name: `Anvil`,
     link: `Uniy1C2QruU`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `soundcloud`,
@@ -200,14 +173,11 @@ export const releases = [{
   artist: `Pixx`,
   release: `Fall In`,
   cover: require(`styles/img/covers/pixx.jpg`),
+  key: `pixx`,
   position: 10,
   song: {
     name: `A Way To Say Goodbye`,
     link: `j5UQuVVKIg4`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `soundcloud`,
@@ -223,14 +193,11 @@ export const releases = [{
   artist: `Kelela`,
   release: `Hallucinogen`,
   cover: require(`styles/img/covers/kelela.jpg`),
+  key: `kelela`,
   position: 11,
   song: {
     name: `A Message`,
     link: `m4-9mYrbXVI`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `youtube`,
@@ -246,14 +213,11 @@ export const releases = [{
   artist: `Jenny Hval`,
   release: `Apocalypse, girl`,
   cover: require(`styles/img/covers/hval.jpg`),
+  key: `hval`,
   position: 12,
   song: {
     name: `That Battle is Over`,
     link: `oGksHxwnap0`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `bandcamp`,
@@ -269,14 +233,11 @@ export const releases = [{
   artist: `HEALTH`,
   release: `Death Magic`,
   cover: require(`styles/img/covers/health.jpg`),
+  key: `health`,
   position: 13,
   song: {
     name: `STONEFIST`,
     link: `G1qvEr9bC6c`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `youtube`,
@@ -292,14 +253,11 @@ export const releases = [{
   artist: `Death Grips`,
   release: `Jenny Death`,
   cover: require(`styles/img/covers/deathgrips.jpg`),
+  key: `deathgrips`,
   position: 14,
   song: {
     name: `I Break Mirrors With My Face in The United States`,
     link: `pwSvL08isHo`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `soundcloud`,
@@ -315,14 +273,11 @@ export const releases = [{
   artist: `Shamir`,
   release: `Ratchet`,
   cover: require(`styles/img/covers/shamir.jpg`),
+  key: `shamir`,
   position: 15,
   song: {
     name: `On The Regular`,
     link: `Lp9GgdCgMXk`,
-  },
-  text: {
-    ru: ``,
-    en: ``,
   },
   links: [{
     site: `yandex`,
