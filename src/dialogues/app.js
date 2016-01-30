@@ -42,8 +42,8 @@ export function App({ DOM, Language }) {
     .scan((prev, next) => prev ? head(without(prev, [`en`, `ru`])) : next)
     //.filter(compose(not, isNil))
 
-  // stream of releases two for now
-  const releases$ = of(releases.slice(0, 2))
+  // stream of releases
+  const releases$ = of(releases)
 
   // stream of texts
   const texts$ = of(texts)
