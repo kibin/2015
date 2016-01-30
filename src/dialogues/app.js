@@ -2,42 +2,98 @@ import './app.styl'
 
 import { article, div, h1, header, hr } from '@motorcycle/dom'
 import isolate from '@cycle/isolate'
-import { map, compose, sortBy, reverse, prop, head } from 'ramda'
-import { of } from 'most'
+import {
+  compose,
+  has,
+  head,
+  identity,
+  isNil,
+  map,
+  not,
+  path,
+  prop,
+  reverse,
+  sortBy,
+  without,
+} from 'ramda'
+import { of, from, combine, join } from 'most'
 
 import { Player, Release } from 'dialogues'
-import { releases } from 'data'
+import { releases, texts } from 'data'
 
-const createRelease = sources => release =>
-  isolate(Release)({ ...sources, props$: of({ release }) })
+const createRelease = DOM => lang => release =>
+  isolate(Release)({ DOM, props$: of({ lang, release }) })
 
-export function App(sources) {
-  const player = Player(sources)
-  const makeChart = compose(
-    map(compose(prop(`DOM`), createRelease(sources))),
-    reverse,
-    sortBy(prop(`position`)),
+const makeChart = (DOM, lang) => compose(
+  map(createRelease(DOM)(lang)),
+  reverse,
+  sortBy(prop(`position`)),
+)
+
+export function App({ DOM, Language }) {
+  // stream of initial language
+  const initialLang$ = Language.map(lang => has(lang, texts) ? lang : `en`)
+
+  // stream of language clicks
+  const nextLang$ = DOM.select(`.lang`).events(`click`)
+
+  // stream of languages
+  const lang$ = initialLang$.concat(nextLang$)
+    .scan((prev, next) => prev ? head(without(prev, [`en`, `ru`])) : next)
+    //.filter(compose(not, isNil))
+
+  // stream of releases two for now
+  const releases$ = of(releases.slice(0, 2))
+
+  // stream of texts
+  const texts$ = of(texts)
+
+  // stream of created releases
+  const children$ = combine(
+    (lang, releases) => makeChart(DOM, lang)(releases),
+    lang$,
+    releases$,
   )
 
+  // stream of states of releases
+  const childrenState$ = children$
+    .map(compose(compose(join, from), map(prop(`state$`))))
+    .join()
+
+  // stream of vtrees of releases
+  const childrenVtree$ = children$
+    .map(map(prop(`DOM`)))
+
+  // stream of playing
+  const play$ = childrenState$
+    .map(prop(`isPlaying`))
+    .filter(identity)
+    .startWith(false)
+
+  const state$ = combine(
+    (lang, isPlaying, texts, chart) => ({ lang, isPlaying, texts, chart }),
+    lang$,
+    play$,
+    texts$,
+    childrenVtree$,
+  )
+
+  //const player = Player(sources)
+
   return {
-    DOM: sources.Language.map(language =>
+    DOM: state$.tap(x => console.log(x)).map(({ lang, isPlaying, texts, chart }) =>
       div([
         header(`.intro`, [
           h1(`.title`, `The best of 2015 in music`),
           hr(`.dash`),
         ]),
+        `player: ${isPlaying ? `on` : `off`}`,
+
+        div(`.lang`, prop(lang, { ru: `Read in english`, en: `Читать на русском` })),
 
         div(`.content`, [
-          article(`.description`, `It’s a little bit late,
-                  but last year we decided to create top albums thing
-                  like serious people, we ripped off design of pitchfork,
-                  started up site and, like, all of that.
-                  So here it is—it doesn’t have Lana or that
-                  totally overrated XX-guy in it, but instead
-                  has all the music that made us laughing, painting,
-                  cooking, programming, dancing like apes, crying on the floor
-                  and simply browsing the internets like normal kids.`),
-          ...makeChart(releases),
+          article(`.description`, path([lang, `about`], texts)),
+          ...chart,
         ]),
         //player.DOM,
       ]),
