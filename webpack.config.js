@@ -7,6 +7,7 @@ const Notifier = require(`webpack-notifier`);
 
 module.exports = {
   devtool: `eval`,
+  debug: true,
   entry: [
     `webpack-hot-middleware/client`,
     `./src/index`,
