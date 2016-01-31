@@ -1,35 +1,64 @@
 import './player.styl'
 
-import { div, iframe } from '@motorcycle/dom'
-import { just } from 'most'
+import { div, span, iframe } from '@motorcycle/dom'
+import { combine } from 'most'
+import { prop, not } from 'ramda'
+
+const intent = DOM => ({
+  close$: DOM.select(`.player-close`).events(`click`),
+  toggle$: DOM.select(`.player-toggle`).events(`click`),
+})
+
+const model = (actions, props$) => {
+  const close$ = actions.close$.startWith().constant({ isPlaying: false })
+  const play$ = close$.merge(props$)
+  const toggle$ = combine(
+    (toggle, { isPlaying }) => isPlaying ? toggle : false,
+    actions.toggle$.scan(not).startWith(false),
+    play$,
+  )
+
+  return play$
+
+  return combine(
+    ({ isPlaying, song }, minimized) => ({ isPlaying, song, minimized }),
+    toggle$,
+    play$,
+  )
+}
+
+const view = state$ => state$.tap(x => console.log(`state`, x)).map(({ isPlaying, song, minimized }) => !isPlaying ? span(``) :
+  div(`.player${minimized ? ` .player_minimized` : ``}`, {
+    style: {
+      position: `fixed`,
+      bottom: 0,
+      right: 0,
+    },
+  }, [
+    div(`.player-buttons`, [
+      div(minimized ? `.player-button.player-button_playing` : ``),
+      div(`.player-button.player-button_toggle.player-toggle`, minimized ? `❏` : `⏤ `),
+      div(`.player-button.player-button_close.player-close`, `✕`),
+    ]),
+    iframe(`.youtube`, {
+      style: { display: `block` },
+      props: {
+        width: 560,
+        height: 315,
+        frameBorder: 0,
+        allowFullscreen: `allowfullscreen`,
+        src: `https://www.youtube.com/embed/${song}?rel=0&amp;showinfo=0&autoplay=1`,
+      },
+    }),
+  ]),
+)
 
 export function Player({ DOM, props$ }) {
-  const link = `1CV_sZuNRyc`
+  const actions = intent(DOM)
+  const state$ = model(actions, props$)
+
   return {
-    DOM: just(
-      div(`.player`, {
-        style: {
-          position: `fixed`,
-          bottom: 0,
-          right: 0,
-        },
-      }, [
-        div(`.player-buttons`, [
-          false && div(`.player-button.player-button_playing`),
-          div(`.player-button.player-button_toggle`, `⏤ | ❏`),
-          div(`.player-button.player-button_close`, `✕`),
-        ]),
-        iframe(`.youtube`, {
-          style: { display: `block` },
-          props: {
-            width: 560,
-            height: 315,
-            frameBorder: 0,
-            allowFullscreen: `allowfullscreen`,
-            src: `https://www.youtube.com/embed/${link}?rel=0&amp;showinfo=0&autoplay=1`,
-          },
-        }),
-      ]),
-    ),
+    state$,
+    DOM: view(state$),
   }
 }
