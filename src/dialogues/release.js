@@ -6,8 +6,12 @@ import { combine, of } from 'most'
 
 import { texts } from 'data'
 
-const intent = DOM => ({
-  play$: DOM.select(`.release-button`).events(`click`).map(_ => true)
+const intent = (DOM, props$) => ({
+  play$: props$.map(({ release }) => DOM
+    .select(`.release-${release.key} .release-button`)
+    .events(`click`)
+    .map(_ => true)
+  ).switch(),
 })
 
 const model = (actions, props$) => combine(
@@ -18,7 +22,7 @@ const model = (actions, props$) => combine(
 
 const view = state$ => state$
   .map(({ release, isPlaying, lang }) =>
-    div(`.release`, [
+    div(`.release.release-${prop(`key`, release)}`, [
       div(`.release-header`, [
         div(`.release-cover`, { style: {
           backgroundImage: `url(${prop(`cover`, release)})`
@@ -43,7 +47,7 @@ const view = state$ => state$
   )
 
 export function Release({ DOM, props$ }) {
-  const actions = intent(DOM)
+  const actions = intent(DOM, props$)
   const state$ = model(actions, props$)
 
   return {

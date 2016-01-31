@@ -22,7 +22,7 @@ import { Player, Release } from 'dialogues'
 import { releases, texts } from 'data'
 
 const createRelease = DOM => lang => release =>
-  isolate(Release)({ DOM, props$: of({ lang, release }) })
+  Release({ DOM, props$: of({ lang, release }) })
 
 const makeChart = (DOM, lang) => compose(
   map(createRelease(DOM)(lang)),
