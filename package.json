@@ -14,8 +14,17 @@
     "@motorcycle/core": "^1.0.0",
     "@motorcycle/dom": "^1.0.3",
     "most": "^0.16.0",
+    "most-subject": "^2.0.1",
     "ramda": "^0.19.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kibin/2015.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kibin/2015/issues"
+  },
+  "homepage": "https://github.com/kibin/2015#readme",
   "devDependencies": {
     "autoprefixer": "*",
     "babel-loader": "*",
