@@ -1,8 +1,8 @@
 .player
-  &_minimized
-    height: 50px
-    width: 150px
-    overflow: hidden
+  position: fixed
+  bottom: 0
+  right: 0
+  transition: width .3s ease, height .3s ease
 
   &-buttons
     text-align: right
@@ -18,12 +18,10 @@
     box-sizing: border-box
     cursor: pointer
     user-select: none
+    font-size: 20px
 
-    &_toggle
-      font-size: 20px
-
+    &_maximize,
     &_close
-      font-size: 20px
       padding-top: 3px
 
     &_playing

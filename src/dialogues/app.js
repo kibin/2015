@@ -31,63 +31,45 @@ const makeChart = (DOM, lang) => compose(
 )
 
 export function App({ DOM, Language }) {
-  // stream of initial language
-  const initialLang$ = Language.map(lang => has(lang, texts) ? lang : `en`)
-
-  // stream of language clicks
-  const nextLang$ = DOM.select(`.lang`).events(`click`)
-
-  // stream of languages
-  const lang$ = initialLang$.concat(nextLang$)
-    .scan((prev, next) => prev ? head(without(prev, [`en`, `ru`])) : next)
-    //.filter(compose(not, isNil))
-
-  // stream of releases
   const releases$ = of(releases)
-
-  // stream of texts
   const texts$ = of(texts)
 
-  // stream of created releases
+  const initialLang$ = Language.map(lang => has(lang, texts) ? lang : `en`)
+  const nextLang$ = DOM.select(`.lang`).events(`click`)
+  const lang$ = initialLang$.concat(nextLang$)
+    .scan((prev, next) => prev ? head(without(prev, [`en`, `ru`])) : next)
+
   const children$ = combine(
     (lang, releases) => makeChart(DOM, lang)(releases),
     lang$,
     releases$,
   )
-
-  // stream of states of releases
   const childrenState$ = children$
     .map(compose(compose(join, from), map(prop(`state$`))))
-    .join()
-
-  // stream of vtrees of releases
+    .switch()
   const childrenVtree$ = children$
     .map(map(prop(`DOM`)))
 
-  // stream of playing
   const play$ = childrenState$
-    .map(prop(`isPlaying`))
-    .filter(identity)
-    .startWith(false)
+    .map(({ isPlaying, release }) =>
+      ({ isPlaying, song: path([`song`, `link`], release) })
+    )
+  const player = Player({ DOM, props$: play$ })
 
   const state$ = combine(
-    (lang, isPlaying, texts, chart) => ({ lang, isPlaying, texts, chart }),
+    (lang, texts, chart) => ({ lang, texts, chart }),
     lang$,
-    play$,
     texts$,
     childrenVtree$,
   )
 
-  //const player = Player(sources)
-
   return {
-    DOM: state$.tap(x => console.log(x)).map(({ lang, isPlaying, texts, chart }) =>
+    DOM: state$.map(({ lang, texts, chart }) =>
       div([
         header(`.intro`, [
           h1(`.title`, `The best of 2015 in music`),
           hr(`.dash`),
         ]),
-        `player: ${isPlaying ? `on` : `off`}`,
 
         div(`.lang`, prop(lang, { ru: `Read in english`, en: `Читать на русском` })),
 
@@ -95,7 +77,7 @@ export function App({ DOM, Language }) {
           article(`.description`, path([lang, `about`], texts)),
           ...chart,
         ]),
-        //player.DOM,
+        player.DOM,
       ]),
     ),
   }
