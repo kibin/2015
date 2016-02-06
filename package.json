@@ -14,7 +14,7 @@
     "@motorcycle/core": "^1.0.0",
     "@motorcycle/dom": "^1.0.3",
     "most": "^0.16.0",
-    "most-subject": "^2.0.1",
+    "most-subject": "^1.0.1",
     "ramda": "^0.19.1"
   },
   "repository": {
