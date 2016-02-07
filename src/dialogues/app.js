@@ -21,16 +21,16 @@ import { of, from, combine, join } from 'most'
 import { Player, Release } from 'dialogues'
 import { releases, texts } from 'data'
 
-const createRelease = DOM => lang => release =>
-  Release({ DOM, props$: of({ lang, release }) })
+const createRelease = (DOM, lang) => (release, player) =>
+  Release({ DOM, props$: of({ lang, release, player }) })
 
 const makeChart = (DOM, lang) => compose(
-  map(createRelease(DOM)(lang)),
+  map(createRelease(DOM, lang)),
   reverse,
   sortBy(prop(`position`)),
 )
 
-export function App({ DOM, Language }) {
+export function App({ DOM, Language, PlayerProxy }) {
   const releases$ = of(releases)
   const texts$ = of(texts)
 
@@ -40,9 +40,10 @@ export function App({ DOM, Language }) {
     .scan((prev, next) => prev ? head(without(prev, [`en`, `ru`])) : next)
 
   const children$ = combine(
-    (lang, releases) => makeChart(DOM, lang)(releases),
+    (lang, releases, player) => makeChart(DOM, lang)(releases, player),
     lang$,
     releases$,
+    PlayerProxy.stream$.startWith({ isPlaying: false }),
   )
   const childrenState$ = children$
     .map(compose(compose(join, from), map(prop(`state$`))))
@@ -55,6 +56,8 @@ export function App({ DOM, Language }) {
       ({ isPlaying, song: path([`song`, `link`], release) })
     )
   const player = Player({ DOM, props$: play$ })
+  const playerState$ = player.state$
+    .map(({ isPlaying }) => ({ isPlaying }))
 
   const state$ = combine(
     (lang, texts, chart) => ({ lang, texts, chart }),
@@ -64,6 +67,7 @@ export function App({ DOM, Language }) {
   )
 
   return {
+    PlayerProxy: playerState$,
     DOM: state$.map(({ lang, texts, chart }) =>
       div([
         header(`.intro`, [

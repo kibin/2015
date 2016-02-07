@@ -15,7 +15,7 @@ const intent = (DOM, props$) => ({
 })
 
 const model = (actions, props$) => combine(
-  (isPlaying, { release, lang }) => ({ release, isPlaying, lang }),
+  (isPlaying, { release, lang, player }) => ({ release, isPlaying, lang }),
   actions.play$.scan(not).startWith(false),
   props$,
 )
